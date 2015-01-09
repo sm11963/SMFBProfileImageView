@@ -14,9 +14,11 @@
 
 @interface SMFBProfileImageView ()
 
+@property (strong, nonatomic) AFHTTPRequestOperationManager *httpManager;
+
 @property (copy, nonatomic) NSDictionary *currentImageQueryParams;
 
-@property (retain, nonatomic) UIImageView *imageView;
+@property (strong, nonatomic) UIImageView *imageView;
 
 - (void)initialize;
 - (void)refreshImage:(BOOL)forceRefresh;
@@ -107,6 +109,9 @@
     if (self.imageView) {
         return;
     }
+  
+    self.httpManager = [AFHTTPRequestOperationManager manager];
+    self.httpManager.responseSerializer = [AFImageResponseSerializer serializer];
 
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -134,12 +139,14 @@
     self.currentImageQueryParams = imageQueryParams;
 
     if (self.profileID) {
-      // Create the request
+      /* Cancel any pending requests */
+      [self.httpManager.operationQueue cancelAllOperations];
+      
+      // Create the request url
       NSString *baseUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture", self.profileID];
      
-      AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-      manager.responseSerializer = [AFImageResponseSerializer serializer];
-      [manager GET:baseUrlString parameters:self.currentImageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      [self.httpManager GET:baseUrlString parameters:self.currentImageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        /* The response is a UIImage since we selected the AFImageResponseSerializer as the response serializer */
         self.imageView.image = responseObject;
         [self ensureImageViewContentMode];
       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
