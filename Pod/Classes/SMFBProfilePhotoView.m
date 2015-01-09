@@ -124,6 +124,9 @@
 }
 
 - (void)refreshImage:(BOOL)forceRefresh  {
+    /* If the size of the image is 0, dont bother sending a url request */
+    if (self.bounds.size.width == 0 || self.bounds.size.height == 0) return;
+     
     NSDictionary *imageQueryParams = [self _generateQueryParams];
 
     // If not forcing refresh, check to see if the previous size we used would be the same
@@ -139,6 +142,7 @@
     self.currentImageQueryParams = imageQueryParams;
 
     if (self.profileID) {
+      
       /* Cancel any pending requests */
       [self.httpManager.operationQueue cancelAllOperations];
       
