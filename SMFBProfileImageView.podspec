@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 		       **Added features to FBProfilePictureView**
                        * Uses AFNetworking to download images and provide caching
                        DESC
-  s.homepage         = "https://github.com/sm11963/SMFBProfileImageView"
+  s.homepage         = "https://github.com/sm11963"
   s.license          = { :type => "Apache 2.0", :file => "LICENSE" }
   s.author           = { "Sam Miller" => "sm11963@gmail.com" }
   s.source           = { :git => "https://github.com/sm11963/SMFBProfileImageView.git", :tag => s.version.to_s }
