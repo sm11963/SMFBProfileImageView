@@ -79,8 +79,8 @@
 
     if (self.pictureCropping == FBProfilePictureCroppingSquare) {
         return @{
-                 @"width":  [NSString stringWithFormat:@"%d", width],
-                 @"height": [NSString stringWithFormat:@"%d", width],
+                 @"width": @(width),
+                 @"height": @(width),
                  };
     }
 
@@ -134,45 +134,12 @@
     self.currentImageQueryParams = imageQueryParams;
 
     if (self.profileID) {
-      // Create the request to let the Facebook SDK handle the URL
-      /*
-      NSString *graphPath = [NSString stringWithFormat:@"%@/picture",self.profileID];
-      FBRequest *fbRequest = [[FBRequest alloc] initWithSession:nil graphPath:graphPath parameters:self.currentImageQueryParams HTTPMethod:nil];
-      FBRequestConnection *requestConnection = [[FBRequestConnection alloc] init];
-      [requestConnection addRequest:fbRequest completionHandler:nil];
-      
-      // Get the url
-      NSURL *url = requestConnection.urlRequest.URL;
-       */
-      NSURL *url;
-      if ([self.currentImageQueryParams valueForKey:@"type"] != nil) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture?type=%@", self.profileID, self.currentImageQueryParams[@"type"]]];
-      }
-      else if ([self.currentImageQueryParams valueForKey:@"width"] != nil && [self.currentImageQueryParams valueForKey:@"height"] != nil) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture?width=%@&height=%@", self.profileID,self.currentImageQueryParams[@"width"],self.currentImageQueryParams[@"height"]]];
-      }
-      else {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture", self.profileID]];
-      }
+      // Create the request
+      NSString *baseUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture", self.profileID];
      
-      /*
-      NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:30.0];
-      [request setHTTPShouldHandleCookies:NO];
-      [request setHTTPShouldUsePipelining:YES];
-      
-      AFHTTPRequestOperation* requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-      requestOperation.responseSerializer = [AFImageResponseSerializer serializer];
-      [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.imageView.image = responseObject;
-        [self ensureImageViewContentMode];
-      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error");
-      }];
-      */
-      
       AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
       manager.responseSerializer = [AFImageResponseSerializer serializer];
-      [manager GET:[url absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      [manager GET:baseUrlString parameters:self.currentImageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.imageView.image = responseObject;
         [self ensureImageViewContentMode];
       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -19,11 +19,11 @@
   [super viewDidLoad];
   self.view.backgroundColor = [UIColor orangeColor];
   
+  /* NOTE: Setup the SMFBProfileImageView just as you would a FBProfilePictureView */
   self.profileImageView = [[SMFBProfileImageView alloc] initWithProfileID:nil
                                                           pictureCropping:FBProfilePictureCroppingSquare];
   self.profileImageView.translatesAutoresizingMaskIntoConstraints = NO;
   self.profileImageView.backgroundColor = [UIColor blueColor];
-  
   [self.view addSubview:self.profileImageView];
   
   self.textField = [UITextField new];
@@ -46,10 +46,11 @@
                           @"textField": self.textField,
                           };
   
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-40-[textField]-15-[button]-50-[profileView(200)]" options:0 metrics:nil views:views]];
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[profileView(200)]" options:0 metrics:nil views:views]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-40-[textField]-15-[button]-50-[profileView(250)]" options:0 metrics:nil views:views]];
   
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[textField]-20-|" options:0 metrics:nil views:views]];
+  
+  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.profileImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.profileImageView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0]];
   
   // Centering
   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.profileImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
@@ -58,6 +59,7 @@
 }
 
 - (void)loadID {
+  /* NOTE: just set the profile ID to load the profile picture for a user */
   self.profileImageView.profileID = ([self.textField.text isEqualToString:@""]) ? nil : self.textField.text;
 }
 
