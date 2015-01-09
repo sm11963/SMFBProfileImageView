@@ -13,10 +13,4 @@
 @property (nonatomic, readonly) NSArray *profileIds;
 @property (nonatomic, strong) UITableView *tableView;
 
-/**
- * @brief Determines whether to use FBProfilePictureView or SMFBProfileImageView
- * @note YES to use @c FBProfilePictureView, NO to use @c SMFBProfileImageView.
- */
-@property (nonatomic) BOOL usesFBProfilePictureView;
-
 @end

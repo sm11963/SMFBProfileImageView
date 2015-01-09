@@ -21,7 +21,6 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		9C045182193C14E8CB7065E9 /* libPods-SMFBProfileImageView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6F4476A0E16B82729065CDD /* libPods-SMFBProfileImageView.a */; };
-		E2AA4C4D1A6085AC00D100A7 /* SMFBTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA4C4C1A6085AC00D100A7 /* SMFBTableViewCell.m */; };
 		E2F1208F1A604DBA00FF6F0C /* SMListController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F1208E1A604DBA00FF6F0C /* SMListController.m */; };
 		E2F120931A60614500FF6F0C /* SMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F120921A60614500FF6F0C /* SMTableViewCell.m */; };
 		F4CCA3F2B510B851D6D84FB3 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F76F1A27AD3509126A0EF7C /* libPods-Tests.a */; };
@@ -66,8 +65,6 @@
 		B3F6CE5F310F41970992D362 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		B77B855D374941378C370443 /* Pods-SMFBProfileImageView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SMFBProfileImageView.release.xcconfig"; path = "Pods/Target Support Files/Pods-SMFBProfileImageView/Pods-SMFBProfileImageView.release.xcconfig"; sourceTree = "<group>"; };
 		C6F4476A0E16B82729065CDD /* libPods-SMFBProfileImageView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SMFBProfileImageView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2AA4C4B1A6085AC00D100A7 /* SMFBTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMFBTableViewCell.h; sourceTree = "<group>"; };
-		E2AA4C4C1A6085AC00D100A7 /* SMFBTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMFBTableViewCell.m; sourceTree = "<group>"; };
 		E2F1208D1A604DBA00FF6F0C /* SMListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMListController.h; sourceTree = "<group>"; };
 		E2F1208E1A604DBA00FF6F0C /* SMListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMListController.m; sourceTree = "<group>"; };
 		E2F120911A60614500FF6F0C /* SMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMTableViewCell.h; sourceTree = "<group>"; };
@@ -191,8 +188,6 @@
 		E2F120901A60612300FF6F0C /* List */ = {
 			isa = PBXGroup;
 			children = (
-				E2AA4C4B1A6085AC00D100A7 /* SMFBTableViewCell.h */,
-				E2AA4C4C1A6085AC00D100A7 /* SMFBTableViewCell.m */,
 				E2F120911A60614500FF6F0C /* SMTableViewCell.h */,
 				E2F120921A60614500FF6F0C /* SMTableViewCell.m */,
 				E2F1208D1A604DBA00FF6F0C /* SMListController.h */,
@@ -381,7 +376,6 @@
 				E2F120931A60614500FF6F0C /* SMTableViewCell.m in Sources */,
 				6003F5A7195388D20070C39A /* SMViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				E2AA4C4D1A6085AC00D100A7 /* SMFBTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

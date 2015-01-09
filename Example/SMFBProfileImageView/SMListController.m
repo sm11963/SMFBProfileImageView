@@ -8,7 +8,6 @@
 
 #import "SMListController.h"
 #import "SMTableViewCell.h"
-#import "SMFBTableViewCell.h"
 #import "SMViewController.h"
 
 @interface SMListController ()
@@ -22,7 +21,6 @@
   self = [super init];
   if (self) {
     _profileIds = [self _testProfileIds];
-    _usesFBProfilePictureView = NO;
   }
   return self;
 }
@@ -31,9 +29,6 @@
   [super viewWillAppear:animated];
   self.title = @"List Demo";
   [self.tableView reloadData];
-  
-  self.usesFBProfilePictureView = YES;
-  [self switchCellVersions];
 }
 
 - (void)viewDidLoad {
@@ -49,7 +44,6 @@
   [self.view addSubview:self.tableView];
   
   [self.tableView registerClass:[SMTableViewCell class] forCellReuseIdentifier:kSMTableViewCellIdentifier];
-  [self.tableView registerClass:[SMFBTableViewCell class] forCellReuseIdentifier:kSMFBTableViewCellIdentifier];
   
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[tableView]-|" options:0 metrics:nil views:@{@"tableView":self.tableView}]];
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[tableView]-|" options:0 metrics:nil views:@{@"tableView":self.tableView}]];
@@ -79,23 +73,13 @@
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  UITableViewCell *thisCell;
+  SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTableViewCellIdentifier forIndexPath:indexPath];
+  cell.profileImageView.profileID = self.profileIds[indexPath.row];
+  #ifdef kAccessToken
+  cell.profileImageView.accessToken = kAccessToken;
+  #endif
   
-  if (self.usesFBProfilePictureView) {
-    SMFBTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMFBTableViewCellIdentifier forIndexPath:indexPath];
-    cell.profileImageView.profileID = self.profileIds[indexPath.row];
-    thisCell = cell;
-  }
-  else {
-    SMTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kSMTableViewCellIdentifier forIndexPath:indexPath];
-    cell.profileImageView.profileID = self.profileIds[indexPath.row];
-    #ifdef kAccessToken
-    cell.profileImageView.accessToken = kAccessToken;
-    #endif
-    thisCell = cell;
-  }
-  
-  return thisCell;
+  return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -106,30 +90,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   return kSMTableViewCellHeight;
-}
-
-#pragma mark - Accessors
-
-- (void)setUsesFBProfilePictureView:(BOOL)usesFBProfilePictureView {
-  if (usesFBProfilePictureView != _usesFBProfilePictureView) {
-    _usesFBProfilePictureView = usesFBProfilePictureView;
-    [self.tableView reloadData];
-  }
-}
-
-#pragma mark - Actions
-
-- (void)switchCellVersions {
-  self.usesFBProfilePictureView = !self.usesFBProfilePictureView;
-  
-  UIBarButtonItem *button;
-  if (self.usesFBProfilePictureView) {
-    button = [[UIBarButtonItem alloc] initWithTitle:@"SM Class" style:UIBarButtonItemStylePlain target:self action:@selector(switchCellVersions)];
-  }
-  else {
-    button = [[UIBarButtonItem alloc] initWithTitle:@"FB Class" style:UIBarButtonItemStylePlain target:self action:@selector(switchCellVersions)];
-  }
-  self.navigationItem.rightBarButtonItem = button;
 }
 
 @end
