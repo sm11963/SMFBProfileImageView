@@ -9,12 +9,12 @@
 
 Pod::Spec.new do |s|
   s.name             = "SMFBProfileImageView"
-  s.version          = "0.1.0"
+  s.version          = "0.2.0"
   s.summary          = "A replacement class for FBProfilePictureView part of the Facebook iOS SDK."
   s.description      = <<-DESC
                        Provides a simple and convient way to display profile
 		       
-		       **Added features to FBProfilePictureView**
+		                   **Features in addition to FBProfilePictureView**
                        * Uses AFNetworking to download images and provide caching
                        DESC
   s.homepage         = "https://github.com/sm11963"
