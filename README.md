@@ -12,9 +12,11 @@
 
 ### FBProfilePictureView in UITableView
 
+The original `FBProfilePictureView` has an issue where images in a UITableView will not be set until scrolling is stopped.
+
 ![fbprofilepictureview_scrolling_small](https://cloud.githubusercontent.com/assets/1255071/5689837/451b1d9a-983c-11e4-90d7-88ed3e4e534e.gif)
 
-This is caused by scheduling the connection handler block to run in the default run loop mode. Therefore, the connection handler block, which sets the image, is not run until scrolling is completed. The fix, which AFNetworking does by default, is to set the runloop mode to NSRunLoopCommonModes when scheduling the connection handler. You can see the difference it makes with [SMFBProfileImageView in UITableView](smfbprofileimageview-in-uitableview) below.
+This is caused by scheduling the connection handler block to run in the default run loop mode. Therefore, the connection handler block, which sets the image, is not run until scrolling is completed. The fix, which AFNetworking does by default, is to set the runloop mode to NSRunLoopCommonModes when scheduling the connection handler. You can see the difference it makes with [SMFBProfileImageView in UITableView](#smfbprofileimageview-in-uitableview) below.
 
 ### SMFBProfileImageView in UITableView
 
