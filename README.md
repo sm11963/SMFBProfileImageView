@@ -1,6 +1,6 @@
 # SMFBProfileImageView
 
-[![CI Status](http://img.shields.io/travis/Sam Miller/SMFBProfileImageView.svg?style=flat)](https://travis-ci.org/Sam Miller/SMFBProfileImageView)
+[![CI Status](https://travis-ci.org/sm11963/SMFBProfileImageView.svg?branch=master&style=flat)](https://travis-ci.org/Sam Miller/SMFBProfileImageView)
 [![Version](https://img.shields.io/cocoapods/v/SMFBProfileImageView.svg?style=flat)](http://cocoadocs.org/docsets/SMFBProfileImageView)
 [![License](https://img.shields.io/cocoapods/l/SMFBProfileImageView.svg?style=flat)](http://cocoadocs.org/docsets/SMFBProfileImageView)
 [![Platform](https://img.shields.io/cocoapods/p/SMFBProfileImageView.svg?style=flat)](http://cocoadocs.org/docsets/SMFBProfileImageView)
