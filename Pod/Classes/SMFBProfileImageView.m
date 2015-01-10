@@ -23,12 +23,11 @@
 #import "SMFBProfileImageView.h"
 #import "FBProfilePictureViewBlankProfilePortraitPNG.h"
 #import "FBProfilePictureViewBlankProfileSquarePNG.h"
+#import "UIImageView+AFNetworking.h"
 #import "AFNetworking.h"
 #import "FacebookSDK.h"
 
 @interface SMFBProfileImageView ()
-
-@property (strong, nonatomic) AFHTTPRequestOperationManager *httpManager;
 
 @property (copy, nonatomic) NSDictionary *currentImageQueryParams;
 
@@ -124,9 +123,6 @@
         return;
     }
   
-    self.httpManager = [AFHTTPRequestOperationManager manager];
-    self.httpManager.responseSerializer = [AFImageResponseSerializer serializer];
-  
     self.graphVersion = @"2.2";
 
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -162,8 +158,8 @@
 
     if (self.profileID) {
       
-      /* Cancel any pending requests */
-      [self.httpManager.operationQueue cancelAllOperations];
+      /* Cancel any pending requests before we start a new one */
+      [self.imageView cancelImageRequestOperation];
       
       NSString *token;
       
@@ -187,15 +183,24 @@
         imageQueryParams = mQueryParams;
       }
       
-      // Create the request url
+      /* Create the request */
       NSString *baseUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/v%@/%@/picture", self.graphVersion, self.profileID];
+      
+      NSError *serializerError = nil;
+      NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"GET" URLString:baseUrlString parameters:imageQueryParams error:&serializerError];
+      
+      // TODO: Should create an error handler block property to run on errors
+      if (serializerError != nil) return;
      
-      [self.httpManager GET:baseUrlString parameters:imageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        /* The response is a UIImage since we selected the AFImageResponseSerializer as the response serializer */
-        self.imageView.image = responseObject;
-        [self ensureImageViewContentMode];
-      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      __weak SMFBProfileImageView* wself = self;
+      
+      [self.imageView setImageWithURLRequest:request placeholderImage:[self _placeholderImage] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        wself.imageView.image = image;
+        [wself ensureImageViewContentMode];
+      } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        // TODO: Should create an error handler block property to run on errors
       }];
+      
     } else {
         self.imageView.image = [self _placeholderImage];
         [self ensureImageViewContentMode];
