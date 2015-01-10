@@ -7,12 +7,20 @@
 //
 
 #import "SMViewController.h"
+#import "SMListController.h"
 
 @interface SMViewController ()
 
 @end
 
 @implementation SMViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  self.title = @"Single Image Demo";
+  UIBarButtonItem *listButton = [[UIBarButtonItem alloc] initWithTitle:@"List" style:UIBarButtonItemStylePlain target:self action:@selector(goToList)];
+  self.navigationItem.rightBarButtonItem = listButton;
+}
 
 - (void)viewDidLoad
 {
@@ -24,6 +32,9 @@
                                                           pictureCropping:FBProfilePictureCroppingSquare];
   self.profileImageView.translatesAutoresizingMaskIntoConstraints = NO;
   self.profileImageView.backgroundColor = [UIColor blueColor];
+#ifdef kAccessToken
+  self.profileImageView.accessToken = kAccessToken;
+#endif
   [self.view addSubview:self.profileImageView];
   
   self.textField = [UITextField new];
@@ -46,21 +57,28 @@
                           @"textField": self.textField,
                           };
   
-  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-40-[textField]-15-[button]-50-[profileView(250)]" options:0 metrics:nil views:views]];
+  [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[textField]-15-[button]-50-[profileView(250)]" options:0 metrics:nil views:views]];
   
   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[textField]-20-|" options:0 metrics:nil views:views]];
   
   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.profileImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.profileImageView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0]];
   
   // Centering
+  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textField attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.topLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1.0 constant:25]];
   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.profileImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textField attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.button attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
 }
 
+#pragma mark - Actions
+
 - (void)loadID {
   /* NOTE: just set the profile ID to load the profile picture for a user */
   self.profileImageView.profileID = ([self.textField.text isEqualToString:@""]) ? nil : self.textField.text;
+}
+
+- (void)goToList {
+  [self.navigationController pushViewController:[SMListController new] animated:YES];
 }
 
 #pragma mark - UITextFieldDelegate

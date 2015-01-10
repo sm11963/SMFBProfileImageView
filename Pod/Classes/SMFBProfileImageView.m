@@ -1,10 +1,24 @@
-//
-//  SMFBProfileImageView.m
-//
-//  Created by Sam Miller on 1/8/15.
-//
-//  Originally from Facebook-iOS-SDK (https://github.com/facebook/facebook-ios-sdk)
-//
+/*
+ * SMFBProfileImageView.m
+ *
+ * Copyright 2012
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by Sam Miller on 1/8/15.
+ *
+ *  Originally from Facebook-iOS-SDK (https://github.com/facebook/facebook-ios-sdk)
+ */
 
 #import "SMFBProfileImageView.h"
 #import "FBProfilePictureViewBlankProfilePortraitPNG.h"
@@ -112,6 +126,8 @@
   
     self.httpManager = [AFHTTPRequestOperationManager manager];
     self.httpManager.responseSerializer = [AFImageResponseSerializer serializer];
+  
+    self.graphVersion = @"2.2";
 
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -125,7 +141,10 @@
 
 - (void)refreshImage:(BOOL)forceRefresh  {
     /* If the size of the image is 0, dont bother sending a url request */
-    if (self.bounds.size.width == 0 || self.bounds.size.height == 0) return;
+    if (self.bounds.size.width == 0 || self.bounds.size.height == 0) {
+      self.imageView.image = [self _placeholderImage];
+      return;
+    }
      
     NSDictionary *imageQueryParams = [self _generateQueryParams];
 
@@ -146,10 +165,32 @@
       /* Cancel any pending requests */
       [self.httpManager.operationQueue cancelAllOperations];
       
+      NSString *token;
+      
+      if (self.accessToken != nil) {
+        token = self.accessToken;
+      }
+      else {
+        /* We default to using the currenly set FBSession access token if it exists */
+        @try {
+          token = [FBSession activeSession].accessTokenData.accessToken;
+        }
+        @catch (NSException *exception) {
+          token = nil;
+        }
+      }
+      
+      /* If we have a token add it to the query parameters but make sure we dont add to the instance property */
+      if (token != nil) {
+        NSMutableDictionary *mQueryParams = [NSMutableDictionary dictionaryWithDictionary:imageQueryParams];
+        mQueryParams[@"access_token"] = token;
+        imageQueryParams = mQueryParams;
+      }
+      
       // Create the request url
-      NSString *baseUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/v2.2/%@/picture", self.profileID];
+      NSString *baseUrlString = [NSString stringWithFormat:@"https://graph.facebook.com/v%@/%@/picture", self.graphVersion, self.profileID];
      
-      [self.httpManager GET:baseUrlString parameters:self.currentImageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      [self.httpManager GET:baseUrlString parameters:imageQueryParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         /* The response is a UIImage since we selected the AFImageResponseSerializer as the response serializer */
         self.imageView.image = responseObject;
         [self ensureImageViewContentMode];

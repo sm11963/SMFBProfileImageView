@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <SMFBProfileImageView/SMFBProfileImageView.h>
 
+/* UNCOMMENT TO USE YOUR OWN ACCESS TOKEN (you can use a temporary one
+ * from http://developers.facebook.com/tools/explorer
+ */
+//#define kAccessToken @""
+
 @interface SMViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, strong) SMFBProfileImageView *profileImageView;
