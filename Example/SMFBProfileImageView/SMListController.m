@@ -51,7 +51,7 @@
 }
 
 /**
- Array of facebook profile IDs for testing. Currently just has a list of company profile IDs
+ * Array of facebook profile IDs for testing. Currently just has a list of company profile IDs
  */
 - (NSArray *)_testProfileIds {
   return @[
