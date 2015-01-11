@@ -14,9 +14,10 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
                        Provides a simple and convient way to display profile
 		       
-		       **Features in addition to FBProfilePictureView**
+            		       **Features in addition to FBProfilePictureView**
+
                        * Uses AFNetworking to download images and provide caching
-		       * Fixes an issue with use in a UITableView where images wont update while scrolling
+            		       * Fixes an issue with use in a UITableView where images wont update while scrolling
                        DESC
   s.homepage         = "https://github.com/sm11963/SMFBProfileImageView"
   s.license          = { :type => "Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)", :file => "LICENSE" }

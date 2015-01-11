@@ -108,9 +108,12 @@ In order to load every profile photo, it may be necessary to use a Facebook acce
 SMFBProfileImageView is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod "SMFBProfileImageView", "0.5.0"
+    pod "SMFBProfileImageView", "0.6.0"
 
 ## Change Log
+
+#### 0.6.0
+* Changed image loading to use the `UIImageView+AFNetworking` category for dedicated image loading support.
 
 #### 0.5.0
 * Initial public release
